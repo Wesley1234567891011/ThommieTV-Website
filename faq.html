@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Veelgestelde Vragen - ThommieTV</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    function toggleAnswer(id) {
+      const answer = document.getElementById(id);
+      answer.style.display = answer.style.display === "none" ? "block" : "none";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Veelgestelde Vragen (FAQ)</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="over.html">Over mij</a>
+      <a href="staff.html">Staff Team</a>
+      <a href="faq.html">FAQ</a>
+      <a href="giveaway.html">Giveaway's</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Stel je vraag 👇</h2>
+    
+    <div class="faq-item">
+      <button onclick="toggleAnswer('a1')">Hoe vaak upload je een video per week?</button>
+      <p id="a1" style="display: none;">Ik heb geen vast upload schema abonneer zodat je een melding krijgt wanneer ik een video upload.</p>
+    </div>
+
+    <div class="faq-item">
+      <button onclick="toggleAnswer('a2')">Hoe word ik staff?</button>
+      <p id="a2" style="display: none;">Join de discord ga naar het kanaal sollicitaties klik op maak een selectie en klik op moderator, vul alle antwoorden in en wacht op antwoord.</p>
+    </div>
+
+    <div class="faq-item">
+      <button onclick="toggleAnswer('a3')">Hoe lang duurt het voordat ik reactie krijg op mijn sollicitatie?</button>
+      <p id="a3" style="display: none;">U krijgt binnen een week antwoord op uw sollicitatie ook als u niet bent aangenomen.</p>
+
+    <div class="faq-item">
+      <button onclick="toggleAnswer('a4')">Hoe join ik een give-away?</button>
+      <p id="a4" style="display: none;">Ga naar ThommieTV.nl/giveaway. en vul je informatie in.</p>
+    </div>
+  </main>
+</body>
+</html>

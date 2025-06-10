@@ -36,7 +36,12 @@ main {
 .staff-lid {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.staff-lid h3 {
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .staff-lid img {
@@ -58,4 +63,43 @@ main {
 .video {
   margin: 1rem 0;
   text-align: center;
+}
+
+.faq-item {
+  margin-bottom: 1rem;
+}
+
+.faq-item button {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.faq-item p {
+  margin: 0.5rem 0 1rem 0;
+  padding: 0.5rem;
+  background-color: #f1f1f1;
+  border-left: 4px solid #ff4444;
+}
+
+form input, form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  margin-top: 1rem;
+  background: #28a745;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
