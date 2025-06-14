@@ -18,6 +18,27 @@
     </nav>
   </header>
 
+  <script>
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+      localStorage.setItem('thema', theme);
+    }
+
+    function toggleTheme() {
+      const huidig = document.body.classList.contains('dark') ? 'dark' : 'light';
+      setTheme(huidig === 'dark' ? 'light' : 'dark');
+    }
+
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    const opgeslagenThema = localStorage.getItem('thema') || 'light';
+    setTheme(opgeslagenThema);
+  </script>
+
   <main>
     <h2>Solliciteren.</h2>
     <p>Solliciteren kan hier of in de discord.</p>
