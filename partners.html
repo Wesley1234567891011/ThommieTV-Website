@@ -113,6 +113,63 @@
       show(0);          // start
       reset();          // auto‑advance
     });
+
+    // Foto’s met bijbehorende links
+  const imageSlides = [
+    { src: 'nederland.png', link: 'https://discord.gg/nederland-link' },
+    { src: 'images/foto2.jpg', link: 'https://voorbeeld2.nl' },
+    { src: 'images/foto3.jpg', link: 'https://voorbeeld3.nl' }
+  ];
+
+  const imageEl = document.getElementById('slider-image');
+  const linkEl = document.getElementById('slider-link');
+  const prevBtn = document.querySelector('.image-slider .prev');
+  const nextBtn = document.querySelector('.image-slider .next');
+  const dotWrapper = document.createElement('div');
+
+  let index = 0;
+  let timerId = null;
+  const SLIDE_TIME = 30000;
+
+  // Dotjes
+  dotWrapper.className = 'slider-dots';
+  document.querySelector('.image-slider').appendChild(dotWrapper);
+
+  imageSlides.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'dot';
+    dot.addEventListener('click', () => showImage(i));
+    dotWrapper.appendChild(dot);
+  });
+
+  function updateDots() {
+    const dots = document.querySelectorAll('.image-slider .dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
+  function showImage(i) {
+    index = (i + imageSlides.length) % imageSlides.length;
+    imageEl.src = imageSlides[index].src;
+    linkEl.href = imageSlides[index].link;
+    updateDots();
+    resetTimer();
+  }
+
+  function nextImage() { showImage(index + 1); }
+  function prevImage() { showImage(index - 1); }
+
+  function resetTimer() {
+    clearInterval(timerId);
+    timerId = setInterval(nextImage, SLIDE_TIME);
+  }
+
+  prevBtn.addEventListener('click', prevImage);
+  nextBtn.addEventListener('click', nextImage);
+
+  showImage(0);
+    
   </script>
 </body>
 </html>
