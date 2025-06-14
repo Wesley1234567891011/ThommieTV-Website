@@ -300,3 +300,26 @@ body.dark #theme-toggle:hover {
 .image-slider .slider-dots .dot.active {
   background: #ff4444;
 }
+
+
+.admin-paneel input {
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.admin-paneel button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  margin-top: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-paneel button:hover {
+  background-color: #0056b3;
+}
