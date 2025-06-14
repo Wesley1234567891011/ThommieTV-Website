@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="admin-paneel">
+    <div id="login-box">
+      <h2>🔒 Admin Login</h2>
+      <input id="username" type="text" placeholder="Gebruikersnaam"><br>
+      <input id="password" type="password" placeholder="Wachtwoord"><br>
+      <button onclick="login()">Inloggen</button>
+      <p id="login-status" style="color: red;"></p>
+    </div>
+
+    <div id="admin-box" style="display: none;">
+      <h1>🎛️ Admin Paneel</h1>
+
+      <section>
+        <h2>🎬 YouTube Video's</h2>
+        <textarea id="videoList" rows="6" placeholder="YouTube IDs, één per regel"></textarea>
+      </section>
+
+      <section>
+        <h2>🖼️ Afbeeldingen Slideshow</h2>
+        <textarea id="imageList" rows="6" placeholder="formaat: link,afbeelding-url"></textarea>
+      </section>
+
+      <button onclick="save()">💾 Opslaan</button>
+      <button onclick="logout()">🚪 Uitloggen</button>
+      <p id="status" style="color: green;"></p>
+    </div>
+  </main>
+
+  <script>
+    // Eenvoudige "inloggegevens" (je kunt deze hashes aanpassen!)
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS_HASH = btoa('5ef6f30658e138ac'); // versleuteld met base64
+
+    function login() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      if (user === ADMIN_USER && btoa(pass) === ADMIN_PASS_HASH) {
+        localStorage.setItem('isAdmin', 'true');
+        showAdmin();
+      } else {
+        document.getElementById('login-status').textContent = 'Ongeldige inloggegevens.';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('isAdmin');
+      location.reload();
+    }
+
+    function showAdmin() {
+      document.getElementById('login-box').style.display = 'none';
+      document.getElementById('admin-box').style.display = 'block';
+
+      // laad data
+      document.getElementById('videoList').value = (localStorage.getItem('videoList') || '').split(',').join('\n');
+      document.getElementById('imageList').value = (localStorage.getItem('imageList') || '').split('|').join('\n');
+    }
+
+    function save() {
+      const videos = document.getElementById('videoList').value.trim().split('\n').map(v => v.trim()).filter(v => v);
+      const images = document.getElementById('imageList').value.trim().split('\n').map(l => l.trim()).filter(l => l);
+
+      localStorage.setItem('videoList', videos.join(','));
+      localStorage.setItem('imageList', images.join('|'));
+
+      document.getElementById('status').textContent = "Opgeslagen!";
+    }
+
+    // Automatisch inloggen als vorige sessie
+    if (localStorage.getItem('isAdmin') === 'true') {
+      showAdmin();
+    }
+  </script>
+</body>
+</html>
