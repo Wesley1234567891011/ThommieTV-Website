@@ -46,10 +46,23 @@
   
 
   <main>
-    <h2>Laatste Video</h2>
-    <div class="video">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/LDsc-mLWHCQ" 
-        title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+    <!-- ============ VIDEO SLIDESHOW ============ -->
+<section class="video-slider">
+  <button class="slider-btn prev" aria-label="Vorige video">❮</button>
+
+  <!-- Eén <video>‑element, we wisselen enkel de bron -->
+  <video id="slider-video"
+         autoplay
+         muted
+         playsinline
+         preload="auto">
+    <!-- De src wordt via JavaScript gezet -->
+  </video>
+
+  <button class="slider-btn next" aria-label="Volgende video">❯</button>
+</section>
+<!-- ============ EINDE SLIDESHOW ============ -->
+
     </div>
 
   <main>
