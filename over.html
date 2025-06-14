@@ -8,6 +8,7 @@
 <body>
   <header>
     <h1>Over Mij</h1>
+    <button id="theme-toggle" aria-label="Verander thema">🌞 / 🌙</button>
     <nav>
       <a href="index.html">Home</a>
       <a href="over.html">Over mij</a>
@@ -17,6 +18,28 @@
       <a href="sollicitatie.html">Solliciteren</a>
     </nav>
   </header>
+
+
+  <script>
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+      localStorage.setItem('thema', theme);
+    }
+
+    function toggleTheme() {
+      const huidig = document.body.classList.contains('dark') ? 'dark' : 'light';
+      setTheme(huidig === 'dark' ? 'light' : 'dark');
+    }
+
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    const opgeslagenThema = localStorage.getItem('thema') || 'light';
+    setTheme(opgeslagenThema);
+  </script>
 
   <main>
     <img src="ThommieTV.jpg" alt="Foto van ThommieTV" class="profile">
