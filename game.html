@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>ThommieTV Runner Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #111;
+      overflow: hidden;
+    }
+    #game {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to top, #333, #555);
+    }
+    #player {
+      position: absolute;
+      bottom: 20px;
+      left: 50px;
+      width: 50px;
+      height: 50px;
+      background: url('https://via.placeholder.com/50x50.png?text=T') no-repeat center/cover;
+    }
+    .obstacle {
+      position: absolute;
+      bottom: 20px;
+      width: 30px;
+      height: 50px;
+      background: red;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div id="player"></div>
+    <div id="score">Score: 0</div>
+  </div>
+
+  <script>
+    const player = document.getElementById('player');
+    const game = document.getElementById('game');
+    const scoreDisplay = document.getElementById('score');
+    let isJumping = false;
+    let score = 0;
+
+    function jump() {
+      if (isJumping) return;
+      isJumping = true;
+      let jumpHeight = 0;
+      const up = setInterval(() => {
+        if (jumpHeight >= 100) {
+          clearInterval(up);
+          const down = setInterval(() => {
+            if (jumpHeight <= 0) {
+              clearInterval(down);
+              isJumping = false;
+            } else {
+              jumpHeight -= 5;
+              player.style.bottom = (20 + jumpHeight) + 'px';
+            }
+          }, 20);
+        } else {
+          jumpHeight += 5;
+          player.style.bottom = (20 + jumpHeight) + 'px';
+        }
+      }, 20);
+    }
+
+    function createObstacle() {
+      const obs = document.createElement('div');
+      obs.classList.add('obstacle');
+      obs.style.left = '100vw';
+      game.appendChild(obs);
+
+      let obsLeft = window.innerWidth;
+      const move = setInterval(() => {
+        if (obsLeft < -30) {
+          clearInterval(move);
+          game.removeChild(obs);
+          score++;
+          scoreDisplay.textContent = 'Score: ' + score;
+        } else if (obsLeft < 100 && obsLeft > 50 && parseInt(player.style.bottom) < 70) {
+          alert('Game Over! Je score: ' + score);
+          location.reload();
+        } else {
+          obsLeft -= 5;
+          obs.style.left = obsLeft + 'px';
+        }
+      }, 20);
+    }
+
+    document.addEventListener('keydown', jump);
+    setInterval(createObstacle, 1500);
+  </script>
+</body>
+</html>
