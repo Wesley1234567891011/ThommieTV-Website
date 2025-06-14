@@ -9,9 +9,31 @@
 <body>
 
   <script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/433c14d7598622a3306996fb7bcf16e5.js"></script>
+  <script>
+    // Thema zetten en opslaan
+    function setTheme(theme) {
+      document.body.className = theme;
+      localStorage.setItem('thema', theme);
+    }
+
+    // Thema toggle functie
+    function toggleTheme() {
+      const huidig = document.body.classList.contains('dark') ? 'dark' : 'light';
+      setTheme(huidig === 'dark' ? 'light' : 'dark');
+    }
+
+    // Eventlistener knop
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    // Laden opgeslagen thema of default light
+    const opgeslagenThema = localStorage.getItem('thema') || 'light';
+    setTheme(opgeslagenThema);
+  </script>
+  
  
   <header>
     <h1>ThommieTV</h1>
+    <button id="theme-toggle" aria-label="Verander thema">🌞 / 🌙</button>
     <nav>
       <a href="index.html">Home</a>
       <a href="over.html">Over mij</a>
