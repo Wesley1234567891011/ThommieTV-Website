@@ -243,3 +243,58 @@ body.dark #theme-toggle:hover {
 
 /* ---------------------------------- */
 
+.image-slider {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.image-slider img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-slider .slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  color: #ff4444;
+  font-size: 2rem;
+  padding: 0 0.6rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s;
+  user-select: none;
+}
+.image-slider .slider-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.image-slider .prev { left: 0.5rem; }
+.image-slider .next { right: 0.5rem; }
+
+.image-slider .slider-dots {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.image-slider .slider-dots .dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 4px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.image-slider .slider-dots .dot.active {
+  background: #ff4444;
+}
