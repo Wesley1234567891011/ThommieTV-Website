@@ -256,7 +256,9 @@ body.dark #theme-toggle:hover {
   max-height: 500px;
   object-fit: cover;
   border-radius: 8px;
+  display: block;  /* Belangrijk */
 }
+
 
 .image-slider .slider-btn {
   position: absolute;
