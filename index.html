@@ -2,76 +2,20 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Home - ThommieTV</title>
+  <title>Home – ThommieTV</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
+
 <body>
+  <script src="//cdn.cookie-script.com/s/433c14d7598622a3306996fb7bcf16e5.js"
+          charset="UTF-8"></script>
 
-  <script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/433c14d7598622a3306996fb7bcf16e5.js"></script>
-
-  <script>
-  // YouTube-video-ID's (pak het deel NA '?v=' uit YouTube-url)
-  const videoList = [
-    'LDsc-mLWHCQ',
-    'NvuXEs4bilc',
-    'aYD196uOniI'
-  ];
-
-  const videoFrame = document.getElementById('slider-video');
-  const prevBtn    = document.querySelector('.slider-btn.prev');
-  const nextBtn    = document.querySelector('.slider-btn.next');
-  const dotWrapper = document.createElement('div');
-
-  let index = 0;
-  let timerId = null;
-  const SLIDE_TIME = 30000; // 30 sec
-
-  // Voeg dotjes toe
-  dotWrapper.className = 'slider-dots';
-  videoFrame.parentNode.appendChild(dotWrapper);
-
-  videoList.forEach((_, i) => {
-    const dot = document.createElement('span');
-    dot.className = 'dot';
-    dot.addEventListener('click', () => showVideo(i));
-    dotWrapper.appendChild(dot);
-  });
-
-  function updateDots() {
-    const dots = document.querySelectorAll('.slider-dots .dot');
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
-    });
-  }
-
-  function showVideo(i) {
-    index = (i + videoList.length) % videoList.length;
-    const videoId = videoList[index];
-    videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0`;
-    updateDots();
-    resetTimer();
-  }
-
-  function nextVideo() { showVideo(index + 1); }
-  function prevVideo() { showVideo(index - 1); }
-
-  function resetTimer() {
-    clearInterval(timerId);
-    timerId = setInterval(nextVideo, SLIDE_TIME);
-  }
-
-  prevBtn.addEventListener('click', prevVideo);
-  nextBtn.addEventListener('click', nextVideo);
-
-  showVideo(0);
-</script>
-
-
-  
+  <!-- ======= HEADER ======= -->
   <header>
     <h1>ThommieTV</h1>
     <button id="theme-toggle" aria-label="Verander thema">🌞 / 🌙</button>
+
     <nav>
       <a href="index.html">Home</a>
       <a href="over.html">Over mij</a>
@@ -82,75 +26,104 @@
     </nav>
   </header>
 
-<script>
-    function setTheme(theme) {
-      if (theme === 'dark') {
-        document.body.classList.add('dark');
-      } else {
-        document.body.classList.remove('dark');
-      }
-      localStorage.setItem('thema', theme);
-    }
-
-    function toggleTheme() {
-      const huidig = document.body.classList.contains('dark') ? 'dark' : 'light';
-      setTheme(huidig === 'dark' ? 'light' : 'dark');
-    }
-
-    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-
-    const opgeslagenThema = localStorage.getItem('thema') || 'light';
-    setTheme(opgeslagenThema);
-  </script>
-  
-
+  <!-- ======= MAIN ======= -->
   <main>
-    <!-- ============ VIDEO SLIDESHOW ============ -->
-<section class="video-slider">
-  <button class="slider-btn prev" aria-label="Vorige video">❮</button>
+    <!-- VIDEO‑SLIDESHOW -->
+    <section class="video-slider">
+      <button class="slider-btn prev" aria-label="Vorige video">❮</button>
 
-  <!-- Eén <video>‑element, we wisselen enkel de bron -->
-  <iframe id="slider-video"
-        width="100%"
-        height="500"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-</iframe>
+      <iframe id="slider-video"
+              width="100%" height="500"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen>
+      </iframe>
 
+      <button class="slider-btn next" aria-label="Volgende video">❯</button>
 
-  <button class="slider-btn next" aria-label="Volgende video">❯</button>
-</section>
-<!-- ============ EINDE SLIDESHOW ============ -->
+      <!-- Dotjes komen hier via JS -->
+    </section>
 
+    <h2>Laatste updates</h2>
+    <p>- Nieuwe website!</p>
+    <p>- VIP‑give‑away op <a href="https://thommietv.nl/giveaway">thommietv.nl/giveaway</a></p>
+
+    <h2>Discord</h2>
+    <div class="discord">
+      <iframe src="https://discord.com/widget?id=1193961999093219459&theme=dark"
+              width="350" height="500" allowtransparency="true"
+              frameborder="0"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
+      </iframe>
     </div>
-
-  <main>
-    <h2>Laatste Updates:</h2>
-    <h2>- Nieuwe Website</h2>
-    <p>
-      Wil jij mee doen aan give-away's ga dan naar de website!
-      https://thommietv.nl/giveaway
-    </p>
-      <h2>- Nieuwe Give-away</h2>
-    <p>
-      Ja ja er is een V.I.P give-away ga naar https://thommietv.nl/giveaway om mee te doen!
-    </p>
-
-    
-    <main>
-      <h2>Discord</h2>
-      <div class="discord">
-        <iframe src="https://discord.com/widget?id=1193961999093219459&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-      </div>
 
     <h2>Contact</h2>
     <div class="socials">
       <a href="https://www.youtube.com/@ThommieTV" target="_blank">YouTube</a>
-      <a href="https://mail.google.com/mail/u/0/?pli=1#inbox?compose=GTvVlcSMVJWBQnlgFJKjllPQGbsHfZLhmPDTdsmPtsNSpkTnwxhMLhvNgMzgfJJKbSfCskjjzKxfq" target="_blank">E-Mail</a>
+      <a href="mailto:example@thommietv.nl" target="_blank">E‑mail</a>
       <a href="https://www.instagram.com/thommietv_yt/" target="_blank">Instagram</a>
       <a href="https://discord.gg/cJt8X4t86Q" target="_blank">Discord</a>
     </div>
   </main>
+
+  <!-- ======= THEMA‑TOGGLE & SLIDESHOW‑SCRIPT ======= -->
+  <script>
+    /* ------- thema toggle ------- */
+    function setTheme(t) {
+      document.body.classList.toggle('dark', t === 'dark');
+      localStorage.setItem('thema', t);
+    }
+    const opgeslagen = localStorage.getItem('thema') || 'light';
+    setTheme(opgeslagen);
+    document.getElementById('theme-toggle').onclick = () =>
+      setTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+
+    /* ------- slideshow ------- */
+    document.addEventListener('DOMContentLoaded', () => {
+      const videoList = ['LDsc-mLWHCQ', 'NvuXEs4bilc', 'aYD196uOniI'];
+      const iframe    = document.getElementById('slider-video');
+      const prevBtn   = document.querySelector('.slider-btn.prev');
+      const nextBtn   = document.querySelector('.slider-btn.next');
+      const dotsWrap  = document.createElement('div');
+      dotsWrap.className = 'slider-dots';
+      iframe.parentNode.appendChild(dotsWrap);
+
+      let idx = 0, timer;
+      const SLIDE_MS = 30_000;
+
+      /* dotjes maken */
+      videoList.forEach((_, i) => {
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.onclick = () => { show(i); reset(); };
+        dotsWrap.appendChild(dot);
+      });
+
+      function updateDots() {
+        dotsWrap.querySelectorAll('.dot').forEach((d, i) =>
+          d.classList.toggle('active', i === idx));
+      }
+
+      function show(i) {
+        idx = (i + videoList.length) % videoList.length;
+        iframe.src = `https://www.youtube.com/embed/${videoList[idx]}?autoplay=1&mute=1&rel=0`;
+        updateDots();
+      }
+
+      function next() { show(idx + 1); }
+      function prev() { show(idx - 1); }
+
+      function reset() {
+        clearInterval(timer);
+        timer = setInterval(next, SLIDE_MS);
+      }
+
+      prevBtn.onclick = () => { prev(); reset(); };
+      nextBtn.onclick = () => { next(); reset(); };
+
+      show(0);          // start
+      reset();          // auto‑advance
+    });
+  </script>
 </body>
 </html>
