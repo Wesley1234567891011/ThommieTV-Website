@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sneak Peeks van Komende Projecten</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 20px; }
+        h1 { color: #2c3e50; }
+        .countdown { font-size: 1.5em; color: #e74c3c; margin-bottom: 20px; }
+        .teaser { margin-bottom: 30px; }
+        .comments { margin-top: 40px; }
+        textarea { width: 100%; height: 80px; }
+        button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #3498db; }
+        .comment-list { margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; }
+        .comment { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Exclusieve Sneak Peeks van Komende Projecten</h1>
+
+    <p>Hier krijg je een eerste blik op de video’s die binnenkort uitkomen. Dit is jouw backstage-pas om alvast een stukje van het nieuwe project te zien voordat het officieel online gaat.</p>
+
+    <div class="countdown" id="countdown">Tijd tot release: Laden...</div>
+
+    <div class="teaser">
+        <h2>Teaser Clip</h2>
+        <video width="100%" controls>
+            <source src="teaser-video.mp4" type="video/mp4" />
+            Jouw browser ondersteunt deze video niet.
+        </video>
+    </div>
+
+    <div class="comments">
+        <h3>Laat je reactie achter</h3>
+        <textarea id="commentInput" placeholder="Schrijf hier je reactie..."></textarea><br />
+        <button onclick="addComment()">Verstuur reactie</button>
+
+        <div class="comment-list" id="commentList"></div>
+    </div>
+
+    <script>
+        // Countdown timer naar 30 juni 2025 20:00
+        const releaseDate = new Date("June 30, 2025 13:00:00").getTime();
+        const countdownEl = document.getElementById('countdown');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = releaseDate - now;
+
+            if (distance < 0) {
+                countdownEl.textContent = "De video is nu beschikbaar!";
+                clearInterval(timer);
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownEl.textContent = `Tijd tot release: ${days}d ${hours}u ${minutes}m ${seconds}s`;
+        }
+
+        const timer = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Reacties toevoegen (alleen lokaal, niet opgeslagen)
+        function addComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            if (!text) return alert('Typ eerst een reactie!');
+
+            const list = document.getElementById('commentList');
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            commentDiv.textContent = text;
+            list.prepend(commentDiv);
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
