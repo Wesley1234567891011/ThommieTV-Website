@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <title>Supabase Video Upload</title>
+  <meta charset="UTF-8">
+  <title>Supabase Upload Test</title>
+  <!-- ✅ Laad eerst de SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <h1>Upload Video</h1>
 
+  <h1>Upload Video</h1>
   <form id="uploadForm">
-    <input type="file" id="videoFile" accept="video/mp4" required />
-    <button type="submit">Upload Video</button>
+    <input type="file" id="videoFile" required />
+    <button type="submit">Upload</button>
   </form>
 
   <div id="message"></div>
 
+  <!-- ✅ Zet jouw script pas hierna, onderaan -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // ✅ Eerst Supabase client initialiseren
+      // ✅ Supabase is nu bekend, want SDK is al geladen hierboven
       const supabaseUrl = 'https://eyffliatclqluapiodte.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5ZmZsaWF0Y2xxbHVhcGlvZHRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NzY1MjgsImV4cCI6MjA2NTU1MjUyOH0.wqUUQ4LnWgMv6oK0FNtmvMpD4jo2ZP_VQq8ODb7Lmhg';
       const supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -30,7 +32,7 @@
 
         const file = document.getElementById('videoFile').files[0];
         if (!file) {
-          message.textContent = 'Geen bestand gekozen!';
+          message.textContent = 'Geen bestand geselecteerd.';
           return;
         }
 
@@ -40,9 +42,9 @@
           .upload(fileName, file);
 
         if (error) {
-          message.textContent = 'Fout bij upload: ' + error.message;
+          message.textContent = 'Fout: ' + error.message;
         } else {
-          message.textContent = 'Video succesvol geüpload!';
+          message.textContent = 'Upload geslaagd!';
         }
       });
     });
