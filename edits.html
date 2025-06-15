@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edit challenge - ThommietV</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 20px; }
+        h1 { color: #27ae60; }
+        p { line-height: 1.5; }
+        .download-section, .upload-section { margin-bottom: 30px; }
+        button, input[type="submit"] {
+            background-color: #27ae60; color: white; border: none; padding: 10px 20px;
+            cursor: pointer; font-size: 1em;
+        }
+        button:hover, input[type="submit"]:hover { background-color: #2ecc71; }
+        label { display: block; margin-top: 15px; }
+        input, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        input[type="file"] { padding: 3px; }
+        .submitted-videos { margin-top: 40px; }
+        .video-entry { border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Video edit challenge</h1>
+
+    <div class="download-section">
+        <h2>1. Download de originele video</h2>
+        <p>Klik op de knop hieronder om de originele video te downloaden die je mag gebruiken voor de challenge.</p>
+        <a href="originele-video.mp4" download>
+            <button>Download Originele Edit Challenge Video</button>
+        </a>
+    </div>
+
+    <div class="upload-section">
+        <h2>2. Upload jouw bewerkte video</h2>
+        <form id="uploadForm">
+            <label for="name">Naam:</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="social">Social Media Handle (optioneel):</label>
+            <input type="text" id="social" name="social" placeholder="@jouwhandle" />
+
+            <label for="description">Korte beschrijving van je edit:</label>
+            <textarea id="description" name="description" rows="3" required></textarea>
+
+            <label for="videoFile">Upload je video (MP4, max 50MB):</label>
+            <input type="file" id="videoFile" name="videoFile" accept="video/mp4" required />
+
+            <input type="submit" value="Upload Video" />
+        </form>
+        <div id="uploadMessage" style="margin-top:15px;"></div>
+    </div>
+
+    <div class="submitted-videos">
+        <h2>Ingezonden edits</h2>
+        <div id="videosList">
+            <p>Er zijn nog geen inzendingen.</p>
+        </div>
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadMessage = document.getElementById('uploadMessage');
+        const videosList = document.getElementById('videosList');
+
+        // Simuleer upload en toon video onderaan (local only)
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = uploadForm.name.value.trim();
+            const social = uploadForm.social.value.trim();
+            const description = uploadForm.description.value.trim();
+            const fileInput = uploadForm.videoFile;
+
+            if (!name || !description || fileInput.files.length === 0) {
+                uploadMessage.textContent = 'Vul alle verplichte velden in!';
+                uploadMessage.style.color = 'red';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            if (file.type !== "video/mp4") {
+                uploadMessage.textContent = 'Upload alleen MP4 bestanden!';
+                uploadMessage.style.color = 'red';
+                return;
+            }
+            if (file.size > 50 * 1024 * 1024) {
+                uploadMessage.textContent = 'Bestand is te groot (max 50MB).';
+                uploadMessage.style.color = 'red';
+                return;
+            }
+
+            // Simuleer upload door video lokaal in pagina te tonen
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Verwijder "geen inzendingen" tekst als die er staat
+                if (videosList.querySelector('p')) {
+                    videosList.innerHTML = '';
+                }
+
+                const div = document.createElement('div');
+                div.className = 'video-entry';
+
+                let socialText = social ? ` (${social})` : '';
+
+                div.innerHTML = `
+                    <strong>${name}${socialText}</strong><br />
+                    <em>${description}</em><br />
+                    <video width="100%" controls src="${e.target.result}"></video>
+                `;
+
+                videosList.prepend(div);
+                uploadMessage.textContent = 'Upload succesvol! Je video is toegevoegd.';
+                uploadMessage.style.color = 'green';
+                uploadForm.reset();
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
