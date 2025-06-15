@@ -2,144 +2,50 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
-  <title>Video Upload & Edit Challenge met Supabase</title>
+  <title>Supabase Video Upload</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body { font-family: Arial; max-width: 700px; margin: auto; padding: 20px; }
-    label, input, textarea, button { display: block; width: 100%; margin-bottom: 15px; }
-    video { max-width: 100%; margin-top: 10px; }
-  </style>
 </head>
 <body>
-
-  <h1>Video Upload & Edit Challenge</h1>
+  <h1>Upload Video</h1>
 
   <form id="uploadForm">
-    <label>Naam*</label>
-    <input type="text" id="name" required />
-
-    <label>Social Media Handle (optioneel)</label>
-    <input type="text" id="social" placeholder="@jouwhandle" />
-
-    <label>Korte beschrijving van je edit*</label>
-    <textarea id="description" rows="3" required></textarea>
-
-    <label>Upload je video (MP4, max 50MB)*</label>
     <input type="file" id="videoFile" accept="video/mp4" required />
-
     <button type="submit">Upload Video</button>
   </form>
 
   <div id="message"></div>
 
-  <h2>Ingezonden video's</h2>
-  <div id="videoList">Laden...</div>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // ✅ Eerst Supabase client initialiseren
+      const supabaseUrl = 'https://eyffliatclqluapiodte.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5ZmZsaWF0Y2xxbHVhcGlvZHRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NzY1MjgsImV4cCI6MjA2NTU1MjUyOH0.wqUUQ4LnWgMv6oK0FNtmvMpD4jo2ZP_VQq8ODb7Lmhg';
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'https://eyffliatclqluapiodte.supabase.co'; // <<< hier jouw URL
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5ZmZsaWF0Y2xxbHVhcGlvZHRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NzY1MjgsImV4cCI6MjA2NTU1MjUyOH0.wqUUQ4LnWgMv6oK0FNtmvMpD4jo2ZP_VQq8ODb7Lmhg'; // <<< hier jouw anon key
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      const form = document.getElementById('uploadForm');
+      const message = document.getElementById('message');
 
-    const form = document.getElementById('uploadForm');
-    const message = document.getElementById('message');
-    const videoList = document.getElementById('videoList');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      message.textContent = '';
+        const file = document.getElementById('videoFile').files[0];
+        if (!file) {
+          message.textContent = 'Geen bestand gekozen!';
+          return;
+        }
 
-      const name = document.getElementById('name').value.trim();
-      const social = document.getElementById('social').value.trim();
-      const description = document.getElementById('description').value.trim();
-      const fileInput = document.getElementById('videoFile');
-      if (!name || !description || fileInput.files.length === 0) {
-        message.style.color = 'red';
-        message.textContent = 'Vul alle verplichte velden in!';
-        return;
-      }
-
-      const file = fileInput.files[0];
-      if (file.type !== 'video/mp4') {
-        message.style.color = 'red';
-        message.textContent = 'Upload alleen MP4-bestanden.';
-        return;
-      }
-      if (file.size > 50 * 1024 * 1024) {
-        message.style.color = 'red';
-        message.textContent = 'Bestand is te groot (max 50MB).';
-        return;
-      }
-
-      const fileName = `${Date.now()}_${file.name}`;
-
-      const { data, error: uploadError } = await supabase.storage
-        .from('edit-challenge-videos')
-        .upload(fileName, file);
-
-      if (uploadError) {
-        message.style.color = 'red';
-        message.textContent = 'Upload mislukt: ' + uploadError.message;
-        return;
-      }
-
-      const { error: dbError } = await supabase
-        .from('videos')
-        .insert([{ 
-          name, social_handle: social, description, video_path: fileName 
-        }]);
-
-      if (dbError) {
-        message.style.color = 'red';
-        message.textContent = 'Database fout: ' + dbError.message;
-        return;
-      }
-
-      message.style.color = 'green';
-      message.textContent = 'Upload succesvol!';
-      form.reset();
-      loadVideos();
-    });
-
-    async function loadVideos() {
-      videoList.textContent = 'Laden...';
-
-      const { data, error } = await supabase
-        .from('videos')
-        .select('*')
-        .order('uploaded_at', { ascending: false });
-
-      if (error) {
-        videoList.textContent = 'Fout bij laden video’s: ' + error.message;
-        return;
-      }
-
-      if (data.length === 0) {
-        videoList.textContent = 'Nog geen inzendingen.';
-        return;
-      }
-
-      videoList.innerHTML = '';
-
-      for (const video of data) {
-        const { data: urlData } = supabase.storage
+        const fileName = `${Date.now()}_${file.name}`;
+        const { data, error } = await supabase.storage
           .from('edit-challenge-videos')
-          .getPublicUrl(video.video_path);
+          .upload(fileName, file);
 
-        const videoEl = document.createElement('div');
-        videoEl.innerHTML = `
-          <strong>${video.name} ${video.social_handle ? '(' + video.social_handle + ')' : ''}</strong><br/>
-          <em>${video.description}</em><br/>
-          <video controls src="${urlData.publicUrl}"></video>
-          <hr/>
-        `;
-        videoList.appendChild(videoEl);
-      }
-    }
-
-    loadVideos();
-  });
-</script>
-
+        if (error) {
+          message.textContent = 'Fout bij upload: ' + error.message;
+        } else {
+          message.textContent = 'Video succesvol geüpload!';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
