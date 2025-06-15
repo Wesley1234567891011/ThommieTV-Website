@@ -1,79 +1,84 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <title>Login systeem</title>
-</head>
-<body>
-  <h2>Firebase Login</h2>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  <div id="userDiv" style="display: none;">
-    <p id="userEmail"></p>
-    <button onclick="logout()">Log uit</button>
-  </div>
+  // ✅ Jouw Firebase-config (zoals je net plaatste)
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6ospo9ex0N1H_yOQF2l5TGWrR1HgjFlc",
+    authDomain: "thommietv-bf802.firebaseapp.com",
+    projectId: "thommietv-bf802",
+    storageBucket: "thommietv-bf802.firebasestorage.app",
+    messagingSenderId: "875921754066",
+    appId: "1:875921754066:web:791d7938f35553c217ea0b"
+  };
 
-  <div id="authDiv">
-    <input type="email" id="email" placeholder="E-mail"><br>
-    <input type="password" id="password" placeholder="Wachtwoord"><br>
-    <button onclick="login()">Inloggen</button>
-    <button onclick="signup()">Registreren</button>
-  </div>
+  // ✅ Initialiseer Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-  <!-- Firebase -->
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+  // 🔐 Registreren
+  function signup() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-// Your web app's Firebase configuration
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("Geregistreerd als:", userCredential.user.email);
+        alert("Account aangemaakt!");
+      })
+      .catch((error) => {
+        console.error("Registratiefout:", error.code, error.message);
+        alert("Fout: " + error.message);
+      });
+  }
 
-    const firebaseConfig = {
-  apiKey: "AIzaSyC6ospo9ex0N1H_yOQF2l5TGWrR1HgjFlc",
-  authDomain: "thommietv-bf802.firebaseapp.com",
-  projectId: "thommietv-bf802",
-  storageBucket: "thommietv-bf802.firebasestorage.app",
-  messagingSenderId: "875921754066",
-  appId: "1:875921754066:web:791d7938f35553c217ea0b"
-    };
+  // 🔓 Inloggen
+  function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("Ingelogd als:", userCredential.user.email);
+        alert("Welkom terug!");
+      })
+      .catch((error) => {
+        console.error("Loginfout:", error.code, error.message);
+        alert("Fout: " + error.message);
+      });
+  }
 
-    function signup() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => alert("Account aangemaakt!"))
-        .catch((error) => alert(error.message));
+  // 🚪 Uitloggen
+  function logout() {
+    signOut(auth)
+      .then(() => {
+        alert("Uitgelogd!");
+      })
+      .catch((error) => {
+        console.error("Uitlogfout:", error);
+      });
+  }
+
+  // 👀 Luisteren naar login-status
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById("authDiv").classList.add("hidden");
+      document.getElementById("userDiv").classList.remove("hidden");
+      document.getElementById("userEmail").innerText = "Ingelogd als: " + user.email;
+    } else {
+      document.getElementById("authDiv").classList.remove("hidden");
+      document.getElementById("userDiv").classList.add("hidden");
     }
+  });
 
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => alert("Ingelogd!"))
-        .catch((error) => alert(error.message));
-    }
-
-    function logout() {
-      signOut(auth);
-    }
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById("authDiv").style.display = "none";
-        document.getElementById("userDiv").style.display = "block";
-        document.getElementById("userEmail").innerText = "Ingelogd als: " + user.email;
-      } else {
-        document.getElementById("authDiv").style.display = "block";
-        document.getElementById("userDiv").style.display = "none";
-      }
-    });
-
-    window.signup = signup;
-    window.login = login;
-    window.logout = logout;
-  </script>
-</body>
-</html>
+  // 🌍 Maak functies beschikbaar voor knoppen
+  window.signup = signup;
+  window.login = login;
+  window.logout = logout;
+</script>
