@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Login systeem</title>
+</head>
+<body>
+  <h2>Firebase Login</h2>
+
+  <div id="userDiv" style="display: none;">
+    <p id="userEmail"></p>
+    <button onclick="logout()">Log uit</button>
+  </div>
+
+  <div id="authDiv">
+    <input type="email" id="email" placeholder="E-mail"><br>
+    <input type="password" id="password" placeholder="Wachtwoord"><br>
+    <button onclick="login()">Inloggen</button>
+    <button onclick="signup()">Registreren</button>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyC6ospo9ex0N1H_yOQF2l5TGWrR1HgjFlc",
+  authDomain: "thommietv-bf802.firebaseapp.com",
+  projectId: "thommietv-bf802",
+  storageBucket: "thommietv-bf802.firebasestorage.app",
+  messagingSenderId: "875921754066",
+  appId: "1:875921754066:web:791d7938f35553c217ea0b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    function signup() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => alert("Account aangemaakt!"))
+        .catch((error) => alert(error.message));
+    }
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => alert("Ingelogd!"))
+        .catch((error) => alert(error.message));
+    }
+
+    function logout() {
+      signOut(auth);
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("authDiv").style.display = "none";
+        document.getElementById("userDiv").style.display = "block";
+        document.getElementById("userEmail").innerText = "Ingelogd als: " + user.email;
+      } else {
+        document.getElementById("authDiv").style.display = "block";
+        document.getElementById("userDiv").style.display = "none";
+      }
+    });
+
+    window.signup = signup;
+    window.login = login;
+    window.logout = logout;
+  </script>
+</body>
+</html>
